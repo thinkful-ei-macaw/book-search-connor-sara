@@ -4,7 +4,7 @@ class Filter extends Component {
   render(){
     return(
         <div>
-        <label for="print-type">
+        <label htmlFor="print-type">
           Print Type: 
         </label>
         <select name="print-type" id="print-type">
@@ -12,7 +12,7 @@ class Filter extends Component {
           <option value="books">Books</option>
           <option value="magazines">Magazines</option>
         </select>
-        <label for="book-type">
+        <label htmlFor="book-type">
           Book Type: 
         </label>
         <select name="book-type" id="book-type">
