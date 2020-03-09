@@ -5,28 +5,31 @@ import Results from './Results';
 
 class App extends Component {
   state = {
-    searchTerm: '',
     error: null,
-    title: '',
-    books: '',
+    books: [],
   }
 
-  handleSearchSubmit = () => {
-    console.log('clicked')
-    fetch(`https://www.googleapis.com/books/v1/volumes?q=${this.state.searchTerm}`)
+  handleSearchSubmit = (e) => {
+    let query = e.target.search.value
+    let booktype = e.target['book-type'].value
+    let printtype = e.target['print-type'].value
+    let url = `https://www.googleapis.com/books/v1/volumes?q=${query}&printType=${printtype}`
+
+    if(booktype){
+      url += `&filter=${booktype}`
+    }
+
+    fetch(`${url}`)
       .then(response =>{
         if(!response.ok) {
-          throw new Error('Something went wrong')
+          throw new Error(response.statusText)
         }
         return response.json()
       })
       .then(data => {
         this.setState({
           books: data.items,
-          title: data.items[0].volumeInfo.title
-          //map over books to get the data we need
         })
-        console.log('done')
       })
       .catch(error => {
         this.setState({
@@ -35,10 +38,7 @@ class App extends Component {
       })
   }
 
-  searchInput = event => {
-    this.setState({searchTerm: event.target.value})
-    console.log(event.target.value)
-  }
+
 
   render(){
     return (
@@ -46,9 +46,8 @@ class App extends Component {
         <header>
           <h1>Google Book Search</h1>
         </header>
-        <Search handleSearchSubmit={this.handleSearchSubmit} handleChange={this.searchInput} />
-        <Results />
-        {this.state.title}
+        <Search handleSearchSubmit={this.handleSearchSubmit} />
+        <Results books={this.state.books}/>
       </div>
     )
   }
