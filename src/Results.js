@@ -1,23 +1,36 @@
 import React, { Component } from 'react'
 
 class Results extends Component {
+  
+  static defaultProps = {
+    books: []
+  }
+  
 
-   
+   /*
+   if (books.totalItems === 0){
+     let bookInfo = "Sorry, we couldn't find anything"
+   }
+   */
 
   render() {
     let books = this.props.books
-    // let price = ''
-    // if(books.saleInfo.saleability === "FOR_SALE"){
-    //   price = `{books.saleInfo.listPrice.amount} {books.saleInfo.listPrice.currencyCode}`}
-    // else {price = 'free'}
-    
-     let bookInfo = books.map(item => {
+
+    const findPrice = (saleInfo) => { 
+      return(
+      (saleInfo.saleability === "FOR_SALE") ?
+          `${saleInfo.listPrice.amount} $ {saleInfo.listPrice.currencyCode}` : 'Free'
+      )     
+    }
+
+    let bookInfo = books.map(item => {
        return (
+
          <li key={item.id}>
           <h1>{item.volumeInfo.title}</h1>
           <p>{item.volumeInfo.authors && item.volumeInfo.authors.join(', ')}</p>
-          <p>Price: {item.saleInfo.saleability === "FOR_SALE" ? 
-          `${item.saleInfo.listPrice.amount} ${item.saleInfo.listPrice.currencyCode}` : 'Free'}</p>
+          <p>Price:  
+          {findPrice(item.saleInfo)}</p>
           <p>{item.volumeInfo.description}</p>
           <img src={item.volumeInfo.imageLinks.thumbnail} alt="book-cover" title={item.volumeInfo.title} />
         </li>

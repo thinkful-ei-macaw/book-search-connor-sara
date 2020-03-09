@@ -27,9 +27,11 @@ class App extends Component {
         return response.json()
       })
       .then(data => {
+        data.totalItems !== 0 ?
         this.setState({
           books: data.items,
         })
+        : this.setState({error: "Sorry, we couldn't find anything"})
       })
       .catch(error => {
         this.setState({
