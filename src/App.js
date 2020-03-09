@@ -50,6 +50,7 @@ class App extends Component {
         </header>
         <Search handleSearchSubmit={this.handleSearchSubmit} />
         <Results books={this.state.books}/>
+        {this.state.error ? this.state.error : ''}
       </div>
     )
   }
